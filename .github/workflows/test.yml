@@ -1,4 +1,4 @@
-name: Builds, tests & co
+name: Testing
 
 on:
   - push
@@ -23,7 +23,5 @@ jobs:
           ocaml-compiler: 5
 
       - run: opam install . --deps-only --with-test
-
-      - run: opam exec -- dune build
 
       - run: opam exec -- dune test
