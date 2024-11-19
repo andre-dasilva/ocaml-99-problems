@@ -12,8 +12,8 @@ bug-reports: "https://github.com/andre-dasilva/ocaml-99-problems/issues"
 depends: [
   "ocaml"
   "dune" {>= "3.11"}
-  "odoc" {with-doc}
   "alcotest" {with-test}
+  "odoc" {with-doc}
 ]
 build: [
   ["dune" "subst"] {dev}
