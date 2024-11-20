@@ -113,3 +113,17 @@ let modified_run_length_encoding (list : string list) : string rle list =
   | [] -> []
   | head :: tail -> List.rev (gather [] 1 head tail)
 ;;
+
+let rec decode_run_length_encoded_list (list : string rle list) : string list =
+  let rec produce_char_list state counter letter =
+    if counter = 0 then state else produce_char_list (letter :: state) (counter - 1) letter
+  in
+  let rle_to_char_list rle : string list =
+    match rle with
+    | Single a -> [ a ]
+    | Multiple (n, a) -> produce_char_list [] n a
+  in
+  match list with
+  | head :: tail -> rle_to_char_list head @ decode_run_length_encoded_list tail
+  | _ -> []
+;;

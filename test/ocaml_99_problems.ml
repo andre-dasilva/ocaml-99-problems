@@ -107,6 +107,22 @@ let test_modified_run_length_encoding () =
     (test_func [ "a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e" ])
 ;;
 
+let test_decode_run_length_encoded_list () =
+  let test_func = Ocaml_99_problems.decode_run_length_encoded_list in
+  check
+    (list string)
+    "run length encoding"
+    [ "a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e" ]
+    (test_func
+       [ Multiple (4, "a")
+       ; Single "b"
+       ; Multiple (2, "c")
+       ; Multiple (2, "a")
+       ; Single "d"
+       ; Multiple (4, "e")
+       ])
+;;
+
 let () =
   Alcotest.run
     "OCaml 99 Problems"
@@ -132,9 +148,18 @@ let () =
             `Quick
             test_pack_consecutive_duplicates
         ] )
-    ; "10.", [ Alcotest.test_case "Run length encoding" `Quick test_run_length_encoding ]
+    ; "10.", [ Alcotest.test_case "Run length encoding (Beginner)" `Quick test_run_length_encoding ]
     ; ( "11."
-      , [ Alcotest.test_case "Modified run length encoding" `Quick test_modified_run_length_encoding
+      , [ Alcotest.test_case
+            "Modified run length encoding (Beginner)"
+            `Quick
+            test_modified_run_length_encoding
+        ] )
+    ; ( "12."
+      , [ Alcotest.test_case
+            "Modified run length encoding (Intermediate)"
+            `Quick
+            test_decode_run_length_encoded_list
         ] )
     ]
 ;;
