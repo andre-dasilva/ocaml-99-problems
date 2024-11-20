@@ -47,4 +47,69 @@ let rec flatten (list : 'a node list) : 'a list =
   | head :: tail -> flatten_node head @ flatten tail
 ;;
 
-let compress (list : string list) = list
+let compress (list : string list) =
+  let rec gather state l =
+    match l with
+    | head :: tail ->
+      (match tail with
+       | next :: _ -> if head = next then gather state tail else gather (head :: state) tail
+       | _ -> head :: state)
+    | _ -> state
+  in
+  let result = gather [] list in
+  List.rev result
+;;
+
+let print_list list =
+  List.iter print_endline list;
+  print_endline ""
+;;
+
+let pack (list : string list) =
+  let rec gather state inner l =
+    match l with
+    | head :: tail ->
+      (match tail with
+       | next :: _ ->
+         if head = next
+         then gather state (head :: inner) tail
+         else gather ((head :: inner) :: state) [] tail
+       | _ -> (head :: inner) :: state)
+    | _ -> state
+  in
+  let result = gather [] [] list in
+  List.rev result
+;;
+
+let run_length_encoding (list : string list) =
+  let rec gather state counter current_letter l =
+    match l with
+    | head :: tail ->
+      if head = current_letter
+      then gather state (counter + 1) head tail
+      else gather ((counter, current_letter) :: state) 1 head tail
+    | _ -> (counter, current_letter) :: state
+  in
+  match list with
+  | [] -> []
+  | head :: tail -> List.rev (gather [] 1 head tail)
+;;
+
+type 'a rle =
+  | Single of 'a
+  | Multiple of int * 'a
+
+let modified_run_length_encoding (list : string list) : string rle list =
+  let rec gather state counter current_letter l =
+    let item = if counter == 1 then Single current_letter else Multiple (counter, current_letter) in
+    match l with
+    | head :: tail ->
+      if head = current_letter
+      then gather state (counter + 1) head tail
+      else gather (item :: state) 1 head tail
+    | _ -> item :: state
+  in
+  match list with
+  | [] -> []
+  | head :: tail -> List.rev (gather [] 1 head tail)
+;;

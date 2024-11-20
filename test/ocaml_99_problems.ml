@@ -1,7 +1,8 @@
 open Alcotest
+open Ocaml_99_problems
 
 let test_tail_of_a_list () =
-  let test_func = Ocaml_99_problems.last in
+  let test_func = last in
   check (option string) "Some d" (Some "d") (test_func [ "a"; "b"; "c"; "d" ]);
   check (option string) "none" None (test_func [])
 ;;
@@ -58,6 +59,54 @@ let test_eliminate_duplicates () =
     (test_func [ "a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e" ])
 ;;
 
+let test_pack_consecutive_duplicates () =
+  let test_func = Ocaml_99_problems.pack in
+  check
+    (list (list string))
+    "pack"
+    [ [ "a"; "a"; "a"; "a" ]
+    ; [ "b" ]
+    ; [ "c"; "c" ]
+    ; [ "a"; "a" ]
+    ; [ "d"; "d" ]
+    ; [ "e"; "e"; "e"; "e" ]
+    ]
+    (test_func [ "a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "d"; "e"; "e"; "e"; "e" ])
+;;
+
+let test_run_length_encoding () =
+  let test_func = Ocaml_99_problems.run_length_encoding in
+  check
+    (list (pair int string))
+    "run length encoding"
+    [ 4, "a"; 1, "b"; 2, "c"; 2, "a"; 1, "d"; 4, "e" ]
+    (test_func [ "a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e" ])
+;;
+
+let test_modified_run_length_encoding () =
+  let ppf_rle ppf (x : string rle) =
+    match x with
+    | Single a -> Fmt.pf ppf "Single(%s)" a
+    | Multiple (n, a) -> Fmt.pf ppf "Multiple(%d, %s)" n a
+  in
+  let rle_testable = testable ppf_rle ( = ) in
+  let test_func = Ocaml_99_problems.modified_run_length_encoding in
+  let expected =
+    [ Multiple (4, "a")
+    ; Single "b"
+    ; Multiple (2, "c")
+    ; Multiple (2, "a")
+    ; Single "d"
+    ; Multiple (4, "e")
+    ]
+  in
+  check
+    (list rle_testable)
+    "run length encoding"
+    expected
+    (test_func [ "a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e" ])
+;;
+
 let () =
   Alcotest.run
     "OCaml 99 Problems"
@@ -76,6 +125,16 @@ let () =
     ; "7.", [ Alcotest.test_case "Flatten a List (Intermediate)" `Quick test_flatten ]
     ; ( "8."
       , [ Alcotest.test_case "Eliminate Duplicates (Intermediate)" `Quick test_eliminate_duplicates
+        ] )
+    ; ( "9."
+      , [ Alcotest.test_case
+            "Pack Consecutive Duplicates (Intermediate)"
+            `Quick
+            test_pack_consecutive_duplicates
+        ] )
+    ; "10.", [ Alcotest.test_case "Run length encoding" `Quick test_run_length_encoding ]
+    ; ( "11."
+      , [ Alcotest.test_case "Modified run length encoding" `Quick test_modified_run_length_encoding
         ] )
     ]
 ;;
