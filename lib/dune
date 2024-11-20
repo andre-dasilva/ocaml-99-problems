@@ -1,2 +1,3 @@
 (library
+ (modules ocaml_99_problems)
  (name ocaml_99_problems))

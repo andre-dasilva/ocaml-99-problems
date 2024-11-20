@@ -1,0 +1,3 @@
+(executable
+ (name ocaml_99_problems)
+ (public_name ocaml_99_problems))

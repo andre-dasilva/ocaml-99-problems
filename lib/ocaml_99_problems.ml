@@ -127,3 +127,9 @@ let rec decode_run_length_encoded_list (list : string rle list) : string list =
   | head :: tail -> rle_to_char_list head @ decode_run_length_encoded_list tail
   | _ -> []
 ;;
+
+let rec duplicates (list : string list) =
+  match list with
+  | [] -> []
+  | head :: tail -> head :: head :: duplicates tail
+;;

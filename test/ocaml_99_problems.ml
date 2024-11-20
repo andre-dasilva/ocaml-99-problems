@@ -123,6 +123,15 @@ let test_decode_run_length_encoded_list () =
        ])
 ;;
 
+let test_duplicate_the_elements_of_a_list () =
+  let test_func = Ocaml_99_problems.duplicates in
+  check
+    (list string)
+    "duplicate elements of list"
+    [ "a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d" ]
+    (test_func [ "a"; "b"; "c"; "c"; "d" ])
+;;
+
 let () =
   Alcotest.run
     "OCaml 99 Problems"
@@ -160,6 +169,12 @@ let () =
             "Modified run length encoding (Intermediate)"
             `Quick
             test_decode_run_length_encoded_list
+        ] )
+    ; ( "13."
+      , [ Alcotest.test_case
+            "Duplicate the Elements of a List (Beginner)"
+            `Quick
+            test_duplicate_the_elements_of_a_list
         ] )
     ]
 ;;
