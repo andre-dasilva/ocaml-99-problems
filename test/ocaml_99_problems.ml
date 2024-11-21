@@ -132,6 +132,15 @@ let test_duplicate_the_elements_of_a_list () =
     (test_func [ "a"; "b"; "c"; "c"; "d" ])
 ;;
 
+let test_replicate_the_elements_of_a_list_a_given_number_of_times () =
+  let test_func = Ocaml_99_problems.replicate in
+  check
+    (list string)
+    "replicate elements"
+    [ "a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c" ]
+    (test_func [ "a"; "b"; "c" ] 3)
+;;
+
 let () =
   Alcotest.run
     "OCaml 99 Problems"
@@ -175,6 +184,12 @@ let () =
             "Duplicate the Elements of a List (Beginner)"
             `Quick
             test_duplicate_the_elements_of_a_list
+        ] )
+    ; ( "14."
+      , [ Alcotest.test_case
+            "Replicate the Elements of a List a Given Number of Times (Intermediate)"
+            `Quick
+            test_replicate_the_elements_of_a_list_a_given_number_of_times
         ] )
     ]
 ;;

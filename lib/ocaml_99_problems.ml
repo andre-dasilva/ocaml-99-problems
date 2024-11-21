@@ -133,3 +133,12 @@ let rec duplicates (list : string list) =
   | [] -> []
   | head :: tail -> head :: head :: duplicates tail
 ;;
+
+let rec replicate (list : string list) (amount : int) =
+  let rec produce_char_list state counter letter =
+    if counter = 0 then state else produce_char_list (letter :: state) (counter - 1) letter
+  in
+  match list with
+  | [] -> []
+  | head :: tail -> produce_char_list [] amount head @ replicate tail amount
+;;
