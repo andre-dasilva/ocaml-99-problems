@@ -142,3 +142,13 @@ let rec replicate (list : string list) (amount : int) =
   | [] -> []
   | head :: tail -> produce_char_list [] amount head @ replicate tail amount
 ;;
+
+let drop (list : string list) (amount : int) =
+  let rec remover state index l =
+    match l with
+    | [] -> state
+    | head :: tail ->
+      if index = amount then remover state 1 tail else remover (head :: state) (index + 1) tail
+  in
+  List.rev (remover [] 1 list)
+;;

@@ -1,8 +1,7 @@
 open Alcotest
-open Ocaml_99_problems
 
 let test_tail_of_a_list () =
-  let test_func = last in
+  let test_func = Ocaml_99_problems.last in
   check (option string) "Some d" (Some "d") (test_func [ "a"; "b"; "c"; "d" ]);
   check (option string) "none" None (test_func [])
 ;;
@@ -84,7 +83,7 @@ let test_run_length_encoding () =
 ;;
 
 let test_modified_run_length_encoding () =
-  let ppf_rle ppf (x : string rle) =
+  let ppf_rle ppf (x : string Ocaml_99_problems.rle) =
     match x with
     | Single a -> Fmt.pf ppf "Single(%s)" a
     | Multiple (n, a) -> Fmt.pf ppf "Multiple(%d, %s)" n a
@@ -92,12 +91,12 @@ let test_modified_run_length_encoding () =
   let rle_testable = testable ppf_rle ( = ) in
   let test_func = Ocaml_99_problems.modified_run_length_encoding in
   let expected =
-    [ Multiple (4, "a")
-    ; Single "b"
-    ; Multiple (2, "c")
-    ; Multiple (2, "a")
-    ; Single "d"
-    ; Multiple (4, "e")
+    [ Ocaml_99_problems.Multiple (4, "a")
+    ; Ocaml_99_problems.Single "b"
+    ; Ocaml_99_problems.Multiple (2, "c")
+    ; Ocaml_99_problems.Multiple (2, "a")
+    ; Ocaml_99_problems.Single "d"
+    ; Ocaml_99_problems.Multiple (4, "e")
     ]
   in
   check
@@ -139,6 +138,15 @@ let test_replicate_the_elements_of_a_list_a_given_number_of_times () =
     "replicate elements"
     [ "a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c" ]
     (test_func [ "a"; "b"; "c" ] 3)
+;;
+
+let test_drop_every_nth_element_from_a_list () =
+  let test_func = Ocaml_99_problems.drop in
+  check
+    (list string)
+    "drop elements"
+    [ "a"; "b"; "d"; "e"; "g"; "h"; "j" ]
+    (test_func [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j" ] 3)
 ;;
 
 let () =
@@ -190,6 +198,12 @@ let () =
             "Replicate the Elements of a List a Given Number of Times (Intermediate)"
             `Quick
             test_replicate_the_elements_of_a_list_a_given_number_of_times
+        ] )
+    ; ( "15."
+      , [ Alcotest.test_case
+            "Drop Every N'th Element From a List (Intermediate)"
+            `Quick
+            test_drop_every_nth_element_from_a_list
         ] )
     ]
 ;;

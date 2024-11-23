@@ -1,4 +1,3 @@
 (test
  (name ocaml_99_problems)
- (modules ocaml_99_problems)
  (libraries ocaml_99_problems alcotest))
