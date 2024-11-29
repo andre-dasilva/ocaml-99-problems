@@ -152,3 +152,17 @@ let drop (list : string list) (amount : int) =
   in
   List.rev (remover [] 1 list)
 ;;
+
+let split (list : string list) (length : int) =
+  let rec pairer state l len =
+    match l with
+    | [] -> state
+    | head :: tail ->
+      let first, second = state in
+      if len > 0
+      then pairer (head :: first, second) tail (len - 1)
+      else pairer (first, head :: second) tail (len - 1)
+  in
+  let first, second = pairer ([], []) list length in
+  List.rev first, List.rev second
+;;

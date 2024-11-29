@@ -149,6 +149,20 @@ let test_drop_every_nth_element_from_a_list () =
     (test_func [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j" ] 3)
 ;;
 
+let test_split_a_list_into_two_parts () =
+  let test_func = Ocaml_99_problems.split in
+  check
+    (pair (list string) (list string))
+    "split into parts"
+    ([ "a"; "b"; "c" ], [ "d"; "e"; "f"; "g"; "h"; "i"; "j" ])
+    (test_func [ "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j" ] 3);
+  check
+    (pair (list string) (list string))
+    "split into parts"
+    ([ "a"; "b"; "c"; "d" ], [])
+    (test_func [ "a"; "b"; "c"; "d" ] 5)
+;;
+
 let () =
   Alcotest.run
     "OCaml 99 Problems"
@@ -204,6 +218,12 @@ let () =
             "Drop Every N'th Element From a List (Intermediate)"
             `Quick
             test_drop_every_nth_element_from_a_list
+        ] )
+    ; ( "16."
+      , [ Alcotest.test_case
+            "Split a List Into Two Parts; The Length of the First Part Is Given (Beginner)"
+            `Quick
+            test_split_a_list_into_two_parts
         ] )
     ]
 ;;
